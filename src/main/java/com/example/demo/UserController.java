@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import io.opentelemetry.api.trace.Span;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,8 @@ public class UserController {
 
     @PostMapping("/signUp")
     public User signUp(@RequestBody User user) {
-        log.info("SignUp: {}", user);
+        Span span = Span.current();
+        log.info("Current span's trace id: {}.", span.getSpanContext().getTraceId());
         return signUp.execute(user);
     }
 
