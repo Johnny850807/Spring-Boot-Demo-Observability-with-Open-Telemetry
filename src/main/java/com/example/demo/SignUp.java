@@ -11,8 +11,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class SignUp {
     private final UserRepository userRepository;
-
-    @WithSpan
     public User execute(User user) {
         return userRepository.save(user);
     }

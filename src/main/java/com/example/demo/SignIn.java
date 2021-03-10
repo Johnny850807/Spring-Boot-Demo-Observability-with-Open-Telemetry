@@ -15,8 +15,6 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class SignIn {
     private final UserRepository userRepository;
-
-    @WithSpan
     public User execute(String email, String password) {
         return userRepository.findFirstByEmailAndPassword(email, password)
                 .orElseThrow();

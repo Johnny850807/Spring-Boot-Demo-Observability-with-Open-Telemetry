@@ -5,7 +5,6 @@ services:
     build: ./
     ports:
       - 8080:8080
-      - 9464:9464
     environment:
       - logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=INFO
       - logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg traceID=%X{traceId} %n
