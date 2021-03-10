@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  user-service:
+    build: ./
+    ports:
+      - 8080:8080
+      - 9464:9464
+    environment:
+      - logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=INFO
+      - logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg traceID=%X{traceId} %n
+      - OTEL_EXPORTER=otlp_span,prometheus
+      - OTEL_EXPORTER_OTLP_ENDPOINT=tempo:55680
+      - OTEL_EXPORTER_OTLP_INSECURE=true
+      - OTEL_RESOURCE_ATTRIBUTES=service.name=user-service
+    logging:
+      driver: loki
+      options:
+        loki-url: 'http://localhost:3100/api/prom/push'
+
+networks:
+  default:
+    external:
+      name: demo-open-telemetry_default
