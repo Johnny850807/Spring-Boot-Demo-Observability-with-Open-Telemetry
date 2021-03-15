@@ -7,9 +7,9 @@ services:
       - 8080:8080
     environment:
       - logging.level.org.springframework.web.filter.CommonsRequestLoggingFilter=INFO
-      - logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg traceID=%X{traceId} %n
+      - logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %logger{36} - %msg traceID=%X{trace_id} %n
       - OTEL_EXPORTER=otlp_span,prometheus
-      - OTEL_EXPORTER_OTLP_ENDPOINT=tempo:55680
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://tempo:55680
       - OTEL_EXPORTER_OTLP_INSECURE=true
       - OTEL_RESOURCE_ATTRIBUTES=service.name=user-service
     logging:
