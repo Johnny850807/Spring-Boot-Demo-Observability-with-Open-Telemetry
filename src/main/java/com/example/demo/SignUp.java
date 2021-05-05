@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import static com.example.demo.SignUpBroker.QUEUE;
+import static com.example.demo.SignUpHandler.QUEUE;
 
 import lombok.AllArgsConstructor;
 import org.springframework.amqp.core.AmqpTemplate;
@@ -16,9 +16,9 @@ public class SignUp {
     private final AmqpTemplate amqpTemplate;
 
     public void execute(User user, Presenter presenter) {
-        User result = userRepository.save(user);
-        amqpTemplate.convertAndSend(QUEUE, "The user " + user.getEmail() + " has signed up.");
-        presenter.present(result);
+        user = userRepository.save(user);
+        amqpTemplate.convertAndSend(QUEUE, user.getId());
+        presenter.present(user);
     }
 
     public interface Presenter {
