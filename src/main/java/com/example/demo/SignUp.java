@@ -1,7 +1,9 @@
 package com.example.demo;
 
-import io.opentelemetry.extension.annotations.WithSpan;
+import static com.example.demo.SignUpBroker.QUEUE;
+
 import lombok.AllArgsConstructor;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,7 +13,15 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class SignUp {
     private final UserRepository userRepository;
-    public User execute(User user) {
-        return userRepository.save(user);
+    private final AmqpTemplate amqpTemplate;
+
+    public void execute(User user, Presenter presenter) {
+        User result = userRepository.save(user);
+        amqpTemplate.convertAndSend(QUEUE, "The user " + user.getEmail() + " has signed up.");
+        presenter.present(result);
+    }
+
+    public interface Presenter {
+        void present(User user);
     }
 }

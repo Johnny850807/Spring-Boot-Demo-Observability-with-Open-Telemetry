@@ -1,11 +1,21 @@
 version: '3.3'
 
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: demo
+      RABBITMQ_DEFAULT_PASS: demo
+      RABBITMQ_DEFAULT_VHOST: /demo
   tempo:
     image: grafana/tempo:0.5.0
     command: [ "--target=all", "--storage.trace.backend=local", "--storage.trace.local.path=/var/tempo", "--auth.enabled=false" ]
     ports:
       - 8081:80
+      - 55680:55680
   tempo-query:
     image: grafana/tempo-query:latest
     #command: ["--grpc-storage-plugin.configuration-file=/etc/tempo-query.yaml"]
